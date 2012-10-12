@@ -122,4 +122,32 @@ public class Solution {
         }
     }
 
+    /**
+    Reverse digits of an integer.
+
+    Example1: x = 123, return 321
+    Example2: x = -123, return -321
+    */
+    public int reverse(int x) {
+        if(x<0) return -reverse(-x);
+        int m=1;
+        int l=1;
+        while(x/m >=10){
+            m*=10;
+        }
+        while(m>l){
+            // get the most/lest siginificant digit of x
+            int md = (x/m)%10;
+            int ld = (x/l)%10;
+            
+            // update the most/least siginificant digit of x
+            x = (x/(m*10))*(m*10) + ld*m+(x%m);
+            x = (x/(l*10))*(l*10) + md*l+(x%l);
+           
+            m/=10;
+            l*=10;
+        }
+        return x;
+    }
+
 }
