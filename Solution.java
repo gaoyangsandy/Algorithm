@@ -280,4 +280,42 @@ public class Solution {
 		m[n - 1 - r][n - 1 - c] = m[c][n - 1 - r];
 		m[c][n - 1 - r] = t;
 	}
+
+	/*
+	 * Given a list, rotate the list to the right by k places, where k is
+	 * non-negative.
+	 * 
+	 * For example: Given 1->2->3->4->5->NULL and k = 2, return
+	 * 4->5->1->2->3->NULL.
+	 */
+	public ListNode rotateRight(ListNode head, int k) {
+		int n = listSize(head);
+		if (n == 0)
+			return head;
+		k = k % n;
+		if (k == 0) {
+			return head;
+		}
+		ListNode p = null;
+		ListNode c = head;
+		for (int i = 0; i < n - k; i++) {
+			p = c;
+			c = c.next;
+		}
+		p.next = null;
+		p = c;
+		while (c.next != null)
+			c = c.next;
+		c.next = head;
+		return p;
+	}
+
+	int listSize(ListNode head) {
+		int count = 0;
+		while (head != null) {
+			count++;
+			head = head.next;
+		}
+		return count;
+	}
 }
