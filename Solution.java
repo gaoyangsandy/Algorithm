@@ -170,8 +170,8 @@ public class Solution {
 	 * 
 	 * return 1->4->3->2->5->NULL.
 	 * 
-	 * Note: Given m, n satisfy the following condition: 1 <= m <= n <= length of
-	 * list.
+	 * Note: Given m, n satisfy the following condition: 1 <= m <= n <= length
+	 * of list.
 	 */
 	public ListNode reverseBetween(ListNode head, int m, int n) {
 		ListNode p = null;
@@ -192,5 +192,57 @@ public class Solution {
 			}
 		}
 		return head;
+	}
+
+	/**
+	 * Given a linked list, reverse the nodes of a linked list k at a time and
+	 * return its modified list.
+	 * 
+	 * If the number of nodes is not a multiple of k then left-out nodes in the
+	 * end should remain as it is.
+	 * 
+	 * You may not alter the values in the nodes, only nodes itself may be
+	 * changed.
+	 * 
+	 * Only constant memory is allowed.
+	 * 
+	 * For example, Given this linked list: 1->2->3->4->5
+	 * 
+	 * For k = 2, you should return: 2->1->4->3->5
+	 * 
+	 * For k = 3, you should return: 3->2->1->4->5
+	 */
+	public ListNode reverseKGroup(ListNode head, int k) {
+		if (k <= 1)
+			return head;
+		ListNode p = null;
+		ListNode c = head;
+		while (countGreaterOrEqual(c, k)) {
+			// reverse c up to kth node
+			for (int i = 0; i < k - 1; i++) {
+				ListNode t = c.next;
+				c.next = t.next;
+				if (p != null) {
+					t.next = p.next;
+					p.next = t;
+				} else {
+					t.next = head;
+					head = t;
+				}
+			}
+			p = c;
+			c = c.next;
+		}
+		return head;
+	}
+
+	// returns true if the list contains more than k nodes
+	boolean countGreaterOrEqual(ListNode head, int k) {
+		for (int i = 0; i < k; i++) {
+			if (head == null)
+				return false;
+			head = head.next;
+		}
+		return true;
 	}
 }
