@@ -62,4 +62,30 @@ public class Solution {
         return dummy.next;
     }
 
+    /**  
+    Given an array and a value, remove all instances of that value in place and return the new length.
+    The order of elements can be changed. It doesn't matter what you leave beyond the new length.
+    */
+    public int removeElement(int[] A, int elem) {
+        
+        int n=A.length;
+        // loop invariant
+        // A[0..i] does not contain elem
+        // A[j..n-1] have not been examed
+        // -1<=i<j<=n and n>=2
+        int i=-1;
+        for(int j=0;j<n;j++){
+            if(A[j]!=elem){
+                swap(A,++i,j);
+            }
+        }
+        return i+1;
+    }
+    
+    void swap(int[] a, int i, int j){
+        int t=a[i];
+        a[i]=a[j];
+        a[j]=t;
+    }
+
 }
