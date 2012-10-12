@@ -245,4 +245,39 @@ public class Solution {
 		}
 		return true;
 	}
+
+	/*
+	 * You are given an n x n 2D matrix representing an image.
+	 * 
+	 * Rotate the image by 90 degrees (clockwise).
+	 * 
+	 * Follow up: Could you do this in-place?
+	 */
+	public void rotate(int[][] matrix) {
+		int n = matrix.length;
+		for (int i = n; i > 0; i -= 2) {
+			rotate(matrix, i);
+		}
+	}
+
+	// rotate the square with length l.
+	// pre: 1<=l<=n
+	void rotate(int[][] m, int l) {
+		int n = m.length;
+		int offset = (n - l) / 2;
+		for (int i = 0; i < l - 1; i++) {
+			rotate(m, offset, offset + i);
+		}
+	}
+
+	// m[r][c] => m[c][n-1-r] => m[n-1-r][n-1-c] => m[n-1-c][r]
+	// pre: 0<=r<=c<=n-1
+	void rotate(int[][] m, int r, int c) {
+		int n = m.length;
+		int t = m[r][c];
+		m[r][c] = m[n - 1 - c][r];
+		m[n - 1 - c][r] = m[n - 1 - r][n - 1 - c];
+		m[n - 1 - r][n - 1 - c] = m[c][n - 1 - r];
+		m[c][n - 1 - r] = t;
+	}
 }
