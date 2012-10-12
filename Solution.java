@@ -370,4 +370,68 @@ public class Solution {
 		}
 		return false;
 	}
+
+	/*
+	 * Given a sorted array of integers, find the starting and ending position
+	 * of a given target value.
+	 * 
+	 * Your algorithm's runtime complexity must be in the order of O(log n).
+	 * 
+	 * If the target is not found in the array, return [-1, -1].
+	 * 
+	 * For example, Given [5, 7, 7, 8, 8, 10] and target value 8, return [3, 4].
+	 */
+
+	public int[] searchRange(int[] a, int target) {
+		int[] result = new int[2];
+		result[0] = searchFirst(a, target);
+		result[1] = searchLast(a, target);
+
+		return result;
+	}
+
+	// pre: a is sorted
+	// returns the index of first occurance of target or -1 is doesn't exist
+	int searchFirst(int[] a, int target) {
+		int i = 0;
+		int j = a.length - 1;
+		while (i <= j) {
+			int m = (i + j) / 2;
+			if (a[m] == target) {
+				if (m == 0 || a[m - 1] != target) {
+					return m;
+				} else {
+					j = m - 1;
+				}
+			} else if (a[m] > target) {
+				j = m - 1;
+			} else {
+				i = m + 1;
+			}
+		}
+		return -1;
+	}
+
+	// pre: a is sorted
+	// returns the index of last occurance of target or -1 is doesn't exist
+	int searchLast(int[] a, int target) {
+		int i = 0;
+		int j = a.length - 1;
+		while (i <= j) {
+			int m = (i + j) / 2;
+			if (a[m] == target) {
+				if (m == a.length - 1 || a[m + 1] != target) {
+					return m;
+				} else {
+					i = m + 1;
+				}
+			} else if (a[m] > target) {
+				j = m - 1;
+			} else {
+				i = m + 1;
+			}
+		}
+		return -1;
+	}
+
 }
