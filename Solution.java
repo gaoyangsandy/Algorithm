@@ -466,6 +466,84 @@ public class Solution {
 				j++;
 			}
 		}
+	}
 
+	/*
+	 * Given a 2D binary matrix filled with 0's and 1's, find the largest
+	 * rectangle containing all ones and return its area.
+	 *
+	 * complexity O(rrc) where r is numer of rows and c is number of columns
+	 */
+	public int maximalRectangle(char[][] matrix) {
+		int rc = matrix.length;
+		if (rc == 0)
+			return 0;
+		int cc = matrix[0].length;
+		if (cc == 0)
+			return 0;
+
+		int[][] p = partialColumnSum(matrix);
+		int maxArea = 0;
+		for (int rs = 0; rs < rc; rs++) {
+			for (int re = rs; re < rc; re++) {
+				int area = maximalRectangleBetweenRows(p, rs, re);
+				maxArea = Math.max(area, maxArea);
+			}
+		}
+		return maxArea;
+	}
+
+	// given a matrix m[0..r-1][0..c-1] where
+	// r>=1 and c>= 1 and m[i][j] can be either '0' or '1'
+	// returns a matrix p[0..r-1][0..c-1] such that
+	// p[i][j] = sum(m[k][j]) where 0<=k<=i for all 0<=i<=r-1 and 0<=j<=c-1
+	// by definition,
+	// p[i][j] = m[i][j] if i=0
+	// p[i-1][j] + m[i][j] if i>0
+	// complexity: O(r*c)
+	int[][] partialColumnSum(char[][] m) {
+		int rc = m.length;
+		int cc = m[0].length;
+		int[][] p = new int[rc][cc];
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				if (i == 0) {
+					p[i][j] = m[i][j] - '0';
+				} else {
+					p[i][j] = p[i - 1][j] + (m[i][j] - '0');
+				}
+			}
+		}
+		return p;
+	}
+
+	// returns the area of the maximal rectangle that
+	// starts on rs and ends on re
+	// complexity: O(c)
+	int maximalRectangleBetweenRows(int[][] p, int rs, int re) {
+		int rowSize = re - rs + 1;
+		int cc = p[0].length;
+		// invariant:
+		// l will be the length of the largest rectangle
+		// that ends on column i-1
+		int l = 0;
+		int maxLength = 0;
+		for (int i = 0; i < cc; i++) {
+			// the sum of column i between rs and re
+			int columnSum;
+			if (rs == 0) {
+				columnSum = p[re][i];
+			} else {
+				columnSum = p[re][i] - p[rs - 1][i];
+			}
+			// column i between row rs and re are all 1s
+			if (columnSum == rowSize) {
+				l = l + 1;
+			} else {
+				l = 0;
+			}
+			maxLength = Math.max(l, maxLength);
+		}
+		return maxLength * rowSize;
 	}
 }
