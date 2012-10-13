@@ -607,4 +607,41 @@ public class Solution {
 		}
 		return maxArea;
 	}
+
+	/*
+	 * Given a 2D binary matrix filled with 0's and 1's, find the largest
+	 * rectangle containing all ones and return its area.
+	 * 
+	 * complexity O(rc) where r is numer of rows and c is number of columns
+	 */
+	public int maximalRectangle2(char[][] matrix) {
+		int rc = matrix.length;
+		if (rc == 0)
+			return 0;
+		int cc = matrix[0].length;
+		if (cc == 0)
+			return 0;
+
+		// for a matrix m[0..r-1][0..c-1], let
+		// h[0..r-1][0..c-1] be the height matrix which is defined as
+		// h[i][j] = max{k: for all 0<=k<=i, h[i-k][j] == '1'}
+		int[][] h = new int[rc][cc];
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				if (matrix[i][j] == '0') {
+					h[i][j] = 0;
+				} else {
+					h[i][j] = (i > 0 ? h[i - 1][j] : 0) + 1;
+				}
+			}
+		}
+
+		int maxArea = 0;
+		for (int i = 0; i < rc; i++) {
+			int area = largestRectangleArea(h[i]);
+			maxArea = Math.max(area, maxArea);
+		}
+		return maxArea;
+
+	}
 }
