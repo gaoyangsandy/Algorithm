@@ -471,7 +471,7 @@ public class Solution {
 	/*
 	 * Given a 2D binary matrix filled with 0's and 1's, find the largest
 	 * rectangle containing all ones and return its area.
-	 *
+	 * 
 	 * complexity O(rrc) where r is numer of rows and c is number of columns
 	 */
 	public int maximalRectangle(char[][] matrix) {
@@ -545,5 +545,66 @@ public class Solution {
 			maxLength = Math.max(l, maxLength);
 		}
 		return maxLength * rowSize;
+	}
+
+	/*
+	 * Given n non-negative integers representing the histogram's bar height
+	 * where the width of each bar is 1, find the area of largest rectangle in
+	 * the histogram.
+	 */
+	public int largestRectangleArea(int[] height) {
+		int n = height.length;
+		// invariant
+		// l[i] = the number of consecutive rectangles to the left of i whose
+		// height
+		// is greater or equal than height[i]
+		int[] l = new int[n];
+		Stack<Integer> s = new Stack<Integer>();
+		for (int i = 0; i < n; i++) {
+			while (!s.empty()) {
+				int pi = s.peek();
+				if (height[pi] >= height[i]) {
+					s.pop();
+				} else {
+					break;
+				}
+			}
+			if (s.empty()) {
+				l[i] = i;
+			} else {
+				l[i] = i - s.peek() - 1;
+			}
+			s.add(i);
+		}
+
+		// invariant
+		// r[i] = the number of consecutive rectangles to the right of i whose
+		// height
+		// is greater or equal than height[i]
+		int[] r = new int[n];
+		s.clear();
+		for (int i = n - 1; i >= 0; i--) {
+			while (!s.empty()) {
+				int pi = s.peek();
+				if (height[pi] >= height[i]) {
+					s.pop();
+				} else {
+					break;
+				}
+			}
+			if (s.empty()) {
+				r[i] = n - 1 - i;
+			} else {
+				r[i] = s.peek() - 1 - i;
+			}
+			s.add(i);
+		}
+
+		int maxArea = 0;
+		for (int i = 0; i < n; i++) {
+			int area = height[i] * (l[i] + r[i] + 1);
+			maxArea = Math.max(area, maxArea);
+		}
+		return maxArea;
 	}
 }
