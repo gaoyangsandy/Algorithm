@@ -644,4 +644,34 @@ public class Solution {
 		return maxArea;
 
 	}
+	
+    public ListNode mergeKLists(ArrayList<ListNode> lists) {
+        if(lists==null) return null;
+        ListNode head=null;
+        ListNode tail=null;
+        while(true){
+            int minNextNodeIndex = -1;
+            for(int i=0;i<lists.size();i++){
+                ListNode n = lists.get(i);
+                if(n!=null && 
+                (minNextNodeIndex==-1 || n.val<lists.get(minNextNodeIndex).val)){
+                    minNextNodeIndex=i;
+                }
+            }
+            if(minNextNodeIndex==-1) break;
+            
+            ListNode nextNode=lists.get(minNextNodeIndex);
+
+            // first node
+            if(tail==null){
+                tail = head = nextNode;
+            }else{
+                tail.next = nextNode;
+                tail=nextNode;
+            }
+         
+            lists.set(minNextNodeIndex,nextNode.next);
+        }
+        return head;
+    }
 }
