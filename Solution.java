@@ -644,163 +644,173 @@ public class Solution {
 		return maxArea;
 
 	}
-	
-    public ListNode mergeKLists(ArrayList<ListNode> lists) {
-        if(lists==null) return null;
-        ListNode head=null;
-        ListNode tail=null;
-        while(true){
-            int minNextNodeIndex = -1;
-            for(int i=0;i<lists.size();i++){
-                ListNode n = lists.get(i);
-                if(n!=null && 
-                (minNextNodeIndex==-1 || n.val<lists.get(minNextNodeIndex).val)){
-                    minNextNodeIndex=i;
-                }
-            }
-            if(minNextNodeIndex==-1) break;
-            
-            ListNode nextNode=lists.get(minNextNodeIndex);
 
-            // first node
-            if(tail==null){
-                tail = head = nextNode;
-            }else{
-                tail.next = nextNode;
-                tail=nextNode;
-            }
-         
-            lists.set(minNextNodeIndex,nextNode.next);
-        }
-        return head;
-    }
-	
-    /*
-    Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+	public ListNode mergeKLists(ArrayList<ListNode> lists) {
+		if (lists == null)
+			return null;
+		ListNode head = null;
+		ListNode tail = null;
+		while (true) {
+			int minNextNodeIndex = -1;
+			for (int i = 0; i < lists.size(); i++) {
+				ListNode n = lists.get(i);
+				if (n != null
+						&& (minNextNodeIndex == -1 || n.val < lists
+								.get(minNextNodeIndex).val)) {
+					minNextNodeIndex = i;
+				}
+			}
+			if (minNextNodeIndex == -1)
+				break;
 
-    (i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+			ListNode nextNode = lists.get(minNextNodeIndex);
 
-    You are given a target value to search. If found in the array return true, otherwise return false.
+			// first node
+			if (tail == null) {
+				tail = head = nextNode;
+			} else {
+				tail.next = nextNode;
+				tail = nextNode;
+			}
 
-    */
-    public boolean search(int[] A, int target) {
-        return search(A,target,0,A.length-1);
-    }
-    
-    boolean search(int[] A,int target, int left, int right){
-        if(left>right) return false;
-        
-        int mid=(left+right)/2;
-        if(A[mid]==target) return true;
-        
-        // A[left..mid] are sorted
-        if(A[mid]>A[left]){
-            if(target>=A[left] && target<A[mid]){
-                return search(A,target,left,mid-1);
-            }else{
-                return search(A,target,mid+1,right);
-            }
-        }
-        // A[mid..right] are sorted
-        else if(A[mid]<A[right]){
-            if(target>A[mid] && target<=A[right]){
-                return search(A,target,mid+1,right);
-            }else{
-                return search(A,target,left,mid-1);
-            }
-        }
-        // not sure which end is sorted
-        else{
-            return search(A,target,left,mid-1)
-            || search(A,target,mid+1,right);
-        }
-    }
+			lists.set(minNextNodeIndex, nextNode.next);
+		}
+		return head;
+	}
 
-    /*
-    Given a sorted array and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+	/*
+	 * Suppose a sorted array is rotated at some pivot unknown to you
+	 * beforehand.
+	 * 
+	 * (i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+	 * 
+	 * You are given a target value to search. If found in the array return
+	 * true, otherwise return false.
+	 */
+	public boolean search(int[] A, int target) {
+		return search(A, target, 0, A.length - 1);
+	}
 
-    You may assume no duplicates in the array.
-    
-    Here are few examples.
-    [1,3,5,6], 5 ? 2
-    [1,3,5,6], 2 ? 1
-    [1,3,5,6], 7 ? 4
-    [1,3,5,6], 0 ? 0
-    */
-    public int searchInsert(int[] A, int target) {
-        return searchInsert(A,target,0,A.length-1);
-    }
-    
-    int searchInsert(int[] A, int target, int left, int right){
-        if(left>right){
-            return left;
-        }
-        
-        int mid = (left+right)/2;
-        if(A[mid]==target) return mid;
-        
-        if(A[mid]>target) return searchInsert(A,target,left,mid-1);
-        
-        return searchInsert(A,target,mid+1,right);
-        
-    }
-	
-    /*
-    Given a m x n matrix, if an element is 0, set its entire row and column to 0. Do it in place.
-    */
-    public void setZeroes(int[][] matrix) {
-        int rc=matrix.length;
-        if(rc==0) return;
-        
-        int cc=matrix[0].length;
-        if(cc==0) return;
-        
-        boolean clearRow0=false;
-        boolean clearCol0=false;
-        for(int i=0;i<rc;i++){
-            if(matrix[i][0]==0){
-                clearCol0=true;
-                break;
-            }
-        }
-        for(int j=0;j<cc;j++){
-            if(matrix[0][j]==0){
-                clearRow0=true;
-                break;
-            }
-        }
-        for(int i=1;i<rc;i++){
-            for(int j=1;j<cc;j++){
-                if(matrix[i][j]==0){
-                    matrix[i][0]=0;
-                    matrix[0][j]=0;
-                }
-            }
-        }
-        for(int i=1;i<rc;i++){
-            if(matrix[i][0]==0){
-                for(int j=1;j<cc;j++){
-                    matrix[i][j]=0;
-                }
-            }
-        }
-        for(int j=1;j<cc;j++){
-            if(matrix[0][j]==0){
-                for(int i=1;i<rc;i++){
-                    matrix[i][j]=0;
-                }
-            }
-        }
-        if(clearRow0){
-            for(int j=0;j<cc;j++){
-                matrix[0][j]=0;
-            }
-        }
-        if(clearCol0){
-            for(int i=0;i<rc;i++){
-                matrix[i][0]=0;
-            }
-        }
-        
-    }
+	boolean search(int[] A, int target, int left, int right) {
+		if (left > right)
+			return false;
+
+		int mid = (left + right) / 2;
+		if (A[mid] == target)
+			return true;
+
+		// A[left..mid] are sorted
+		if (A[mid] > A[left]) {
+			if (target >= A[left] && target < A[mid]) {
+				return search(A, target, left, mid - 1);
+			} else {
+				return search(A, target, mid + 1, right);
+			}
+		}
+		// A[mid..right] are sorted
+		else if (A[mid] < A[right]) {
+			if (target > A[mid] && target <= A[right]) {
+				return search(A, target, mid + 1, right);
+			} else {
+				return search(A, target, left, mid - 1);
+			}
+		}
+		// not sure which end is sorted
+		else {
+			return search(A, target, left, mid - 1)
+					|| search(A, target, mid + 1, right);
+		}
+	}
+
+	/*
+	 * Given a sorted array and a target value, return the index if the target
+	 * is found. If not, return the index where it would be if it were inserted
+	 * in order.
+	 * 
+	 * You may assume no duplicates in the array.
+	 * 
+	 * Here are few examples. [1,3,5,6], 5 ? 2 [1,3,5,6], 2 ? 1 [1,3,5,6], 7 ? 4
+	 * [1,3,5,6], 0 ? 0
+	 */
+	public int searchInsert(int[] A, int target) {
+		return searchInsert(A, target, 0, A.length - 1);
+	}
+
+	int searchInsert(int[] A, int target, int left, int right) {
+		if (left > right) {
+			return left;
+		}
+
+		int mid = (left + right) / 2;
+		if (A[mid] == target)
+			return mid;
+
+		if (A[mid] > target)
+			return searchInsert(A, target, left, mid - 1);
+
+		return searchInsert(A, target, mid + 1, right);
+
+	}
+
+	/*
+	 * Given a m x n matrix, if an element is 0, set its entire row and column
+	 * to 0. Do it in place.
+	 */
+	public void setZeroes(int[][] matrix) {
+		int rc = matrix.length;
+		if (rc == 0)
+			return;
+
+		int cc = matrix[0].length;
+		if (cc == 0)
+			return;
+
+		boolean clearRow0 = false;
+		boolean clearCol0 = false;
+		for (int i = 0; i < rc; i++) {
+			if (matrix[i][0] == 0) {
+				clearCol0 = true;
+				break;
+			}
+		}
+		for (int j = 0; j < cc; j++) {
+			if (matrix[0][j] == 0) {
+				clearRow0 = true;
+				break;
+			}
+		}
+		for (int i = 1; i < rc; i++) {
+			for (int j = 1; j < cc; j++) {
+				if (matrix[i][j] == 0) {
+					matrix[i][0] = 0;
+					matrix[0][j] = 0;
+				}
+			}
+		}
+		for (int i = 1; i < rc; i++) {
+			if (matrix[i][0] == 0) {
+				for (int j = 1; j < cc; j++) {
+					matrix[i][j] = 0;
+				}
+			}
+		}
+		for (int j = 1; j < cc; j++) {
+			if (matrix[0][j] == 0) {
+				for (int i = 1; i < rc; i++) {
+					matrix[i][j] = 0;
+				}
+			}
+		}
+		if (clearRow0) {
+			for (int j = 0; j < cc; j++) {
+				matrix[0][j] = 0;
+			}
+		}
+		if (clearCol0) {
+			for (int i = 0; i < rc; i++) {
+				matrix[i][0] = 0;
+			}
+		}
+
+	}
 }
