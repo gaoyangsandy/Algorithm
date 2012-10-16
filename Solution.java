@@ -674,4 +674,45 @@ public class Solution {
         }
         return head;
     }
+	
+    /*
+    Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+
+    (i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+
+    You are given a target value to search. If found in the array return true, otherwise return false.
+
+    */
+    public boolean search(int[] A, int target) {
+        return search(A,target,0,A.length-1);
+    }
+    
+    boolean search(int[] A,int target, int left, int right){
+        if(left>right) return false;
+        
+        int mid=(left+right)/2;
+        if(A[mid]==target) return true;
+        
+        // A[left..mid] are sorted
+        if(A[mid]>A[left]){
+            if(target>=A[left] && target<A[mid]){
+                return search(A,target,left,mid-1);
+            }else{
+                return search(A,target,mid+1,right);
+            }
+        }
+        // A[mid..right] are sorted
+        else if(A[mid]<A[right]){
+            if(target>A[mid] && target<=A[right]){
+                return search(A,target,mid+1,right);
+            }else{
+                return search(A,target,left,mid-1);
+            }
+        }
+        // not sure which end is sorted
+        else{
+            return search(A,target,left,mid-1)
+            || search(A,target,mid+1,right);
+        }
+    }
 }
