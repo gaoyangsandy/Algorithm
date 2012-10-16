@@ -744,4 +744,63 @@ public class Solution {
         return searchInsert(A,target,mid+1,right);
         
     }
+	
+    /*
+    Given a m x n matrix, if an element is 0, set its entire row and column to 0. Do it in place.
+    */
+    public void setZeroes(int[][] matrix) {
+        int rc=matrix.length;
+        if(rc==0) return;
+        
+        int cc=matrix[0].length;
+        if(cc==0) return;
+        
+        boolean clearRow0=false;
+        boolean clearCol0=false;
+        for(int i=0;i<rc;i++){
+            if(matrix[i][0]==0){
+                clearCol0=true;
+                break;
+            }
+        }
+        for(int j=0;j<cc;j++){
+            if(matrix[0][j]==0){
+                clearRow0=true;
+                break;
+            }
+        }
+        for(int i=1;i<rc;i++){
+            for(int j=1;j<cc;j++){
+                if(matrix[i][j]==0){
+                    matrix[i][0]=0;
+                    matrix[0][j]=0;
+                }
+            }
+        }
+        for(int i=1;i<rc;i++){
+            if(matrix[i][0]==0){
+                for(int j=1;j<cc;j++){
+                    matrix[i][j]=0;
+                }
+            }
+        }
+        for(int j=1;j<cc;j++){
+            if(matrix[0][j]==0){
+                for(int i=1;i<rc;i++){
+                    matrix[i][j]=0;
+                }
+            }
+        }
+        if(clearRow0){
+            for(int j=0;j<cc;j++){
+                matrix[0][j]=0;
+            }
+        }
+        if(clearCol0){
+            for(int i=0;i<rc;i++){
+                matrix[i][0]=0;
+            }
+        }
+        
+    }
 }
