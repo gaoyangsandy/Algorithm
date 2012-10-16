@@ -813,4 +813,35 @@ public class Solution {
 		}
 
 	}
+
+	// Given an absolute path for a file (Unix-style), simplify it
+	// For example,
+	// path = "/home/", => "/home"
+	// path = "/a/./b/../../c/", => "/c"
+	public String simplifyPath(String path) {
+		ArrayList<String> p = new ArrayList<String>();
+		for (String s : path.split("/")) {
+			if (s.length() == 0 || s.equals("."))
+				continue;
+			if (s.equals("..")) {
+				if (p.size() > 0) {
+					p.remove(p.size() - 1);
+				}
+			} else {
+				p.add(s);
+			}
+		}
+		StringBuilder sb = new StringBuilder();
+		if (p.size() == 0) {
+			sb.append('/');
+		} else {
+			for (int i = 0; i < p.size(); i++) {
+				sb.append('/');
+				sb.append(p.get(i));
+			}
+		}
+		return sb.toString();
+
+	}
+
 }
