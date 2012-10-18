@@ -1081,4 +1081,70 @@ public class Solution {
 		}
 		return total;
 	}
+
+	/*
+	 * 
+	 * Follow up for "Unique Paths":
+	 * 
+	 * Now consider if some obstacles are added to the grids. How many unique
+	 * paths would there be?
+	 * 
+	 * An obstacle and empty space is marked as 1 and 0 respectively in the
+	 * grid.
+	 * 
+	 * For example, There is one obstacle in the middle of a 3x3 grid as
+	 * illustrated below.
+	 */
+	public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+		int rc = obstacleGrid.length;
+		if (rc == 0)
+			return 0;
+		int cc = obstacleGrid[0].length;
+		if (cc == 0)
+			return 0;
+
+		int[][] count = new int[rc][cc];
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				if (obstacleGrid[i][j] == 1) {
+					count[i][j] = 0;
+				} else if (i == 0 && j == 0) {
+					count[i][j] = 1;
+				} else {
+					if (i > 0)
+						count[i][j] += count[i - 1][j];
+					if (j > 0)
+						count[i][j] += count[i][j - 1];
+				}
+			}
+		}
+		return count[rc - 1][cc - 1];
+	}
+
+	/*
+	 * Given a string containing just the characters '(', ')', '{', '}', '[' and
+	 * ']', determine if the input string is valid.
+	 * 
+	 * The brackets must close in the correct order, "()" and "()[]{}" are all
+	 * valid but "(]" and "([)]" are not.
+	 */
+	public boolean isValid(String s) {
+		Stack<Character> stack = new Stack<Character>();
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (c == '(' || c == '{' || c == '[') {
+				stack.push(c);
+			} else {
+				if (stack.size() == 0)
+					return false;
+				char p = stack.pop();
+				if (!((c == ')' && p == '(') || (c == '}' && p == '{') || (c == ']' && p == '['))) {
+					return false;
+				}
+			}
+		}
+		if (stack.size() == 0)
+			return true;
+		return false;
+	}
 }
