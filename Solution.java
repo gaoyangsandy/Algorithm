@@ -971,4 +971,31 @@ public class Solution {
 		}
 		return sb.toString();
 	}
+	
+    public int sqrt(int x) {
+        
+        if(x==0) return 0;
+        if(x==1) return 1;
+        
+        int i=0;
+        int j=x;
+        // invariant:
+        // i< sqrt(x) <j
+        while(i+1<j){
+            int m=(i+j)/2;
+            if(Integer.MAX_VALUE/m<m){
+                j=m;
+            }else{
+                int m2=m*m;
+                if(m2==x) return m;
+                if(m2>x){
+                    j=m;
+                }else{
+                    i=m;
+                }
+            }
+        }
+        return i;
+        
+    }
 }
