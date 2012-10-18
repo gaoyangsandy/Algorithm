@@ -1063,4 +1063,22 @@ public class Solution {
 				&& isMirror(root1.right, root2.left);
 
 	}
+
+	/*
+	 * Given n, how many structurally unique BST's (binary search trees) that
+	 * store values 1...n?
+	 * 
+	 * For example, Given n = 3, there are a total of 5 unique BST's.
+	 */
+	public int numTrees(int n) {
+		if (n == 0)
+			return 1;
+		int total = 0;
+		for (int i = 0; i < n; i++) {
+			int left = i;
+			int right = n - i - 1;
+			total += numTrees(left) * numTrees(right);
+		}
+		return total;
+	}
 }
