@@ -1189,15 +1189,14 @@ public class Solution {
 		char s1 = s.charAt(0);
 
 		if (p1 == '*') {
-			return isMatch(s.substring(1),p) || isMatch(s,p.substring(1));
+			return isMatch(s.substring(1), p) || isMatch(s, p.substring(1));
 		} else if (p1 == '?') {
 			return isMatch(s.substring(1), p.substring(1));
 		} else {
 			return p1 == s1 && isMatch(s.substring(1), p.substring(1));
 		}
 	}
-	
-	
+
 	/*
 	 * 
 	 * Implement wildcard pattern matching with support for '?' and '*'.
@@ -1207,37 +1206,44 @@ public class Solution {
 	 * 
 	 * The matching should cover the entire input string (not partial).
 	 */
-    public boolean isMatch(String s, String p) {
-        // let match[i][j] indicate s[0..i-1] and p[0..j-1] is a match
-        // match[i][j] = 
-        //    if p[j-1] == '*' then match[i-1][j] || match[i][j-1]
-        //    else if p[j-1] == '?' then match[i-1][j-1]
-        //    else then s[i-1]==p[j-1] && match[i-1][j-1]
-        // base case match[0][0] = true
-        //           match[i][0] = false
-        //           match[0][j] = if p[j] == '*' then match[0][j-1] else false
-        boolean[][]  match = new boolean[s.length()+1][p.length()+1];
-                
-        for(int i=0;i<=s.length();i++){
-            for(int j=0;j<=p.length();j++){
-                if(i==0 && j==0){
-                    match[i][j]=true;
-                }else if(j==0){
-                    match[i][j]=false;
-                }else if(i==0){
-                    match[i][j]= p.charAt(j-1)=='*' && match[i][j-1] || false;
-                }else{
-                    if(p.charAt(j-1)=='*'){
-                        match[i][j]=match[i][j-1] || match[i-1][j];
-                    }else if(p.charAt(j-1)=='?'){
-                        match[i][j]=match[i-1][j-1];
-                    }else{
-                        match[i][j]=s.charAt(i-1)==p.charAt(j-1) && match[i-1][j-1];
-                    }
-                }
-            }
-        }
-        
-        return match[s.length()][p.length()];
-    }
+	public boolean isMatch(String s, String p) {
+		// let match[i][j] indicate s[0..i-1] and p[0..j-1] is a match
+		// match[i][j] =
+		// if p[j-1] == '*' then match[i-1][j] || match[i][j-1]
+		// else if p[j-1] == '?' then match[i-1][j-1]
+		// else then s[i-1]==p[j-1] && match[i-1][j-1]
+		// base case match[0][0] = true
+		// match[i][0] = false
+		// match[0][j] = if p[j] == '*' then match[0][j-1] else false
+		// boolean[][] match = new boolean[s.length()+1][p.length()+1];
+
+		// use pm[j] to simulate match[i-1][j]
+		// m[j] to simulate match[i][j]
+		boolean[] pm = new boolean[p.length() + 1];
+		boolean[] m = new boolean[p.length() + 1];
+		for (int i = 0; i <= s.length(); i++) {
+			for (int j = 0; j <= p.length(); j++) {
+				if (i == 0 && j == 0) {
+					m[j] = true;
+				} else if (j == 0) {
+					m[j] = false;
+				} else if (i == 0) {
+					m[j] = p.charAt(j - 1) == '*' && m[j - 1] || false;
+				} else {
+					if (p.charAt(j - 1) == '*') {
+						m[j] = m[j - 1] || pm[j];
+					} else if (p.charAt(j - 1) == '?') {
+						m[j] = pm[j - 1];
+					} else {
+						m[j] = s.charAt(i - 1) == p.charAt(j - 1) && pm[j - 1];
+					}
+				}
+			}
+			boolean[] t = pm;
+			pm = m;
+			m = t;
+		}
+
+		return pm[p.length()];
+	}
 }
