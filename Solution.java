@@ -1168,4 +1168,37 @@ public class Solution {
 				&& isValidBST(root.left, lower, root.val)
 				&& isValidBST(root.right, root.val, upper);
 	}
+
+	/*
+	 * 
+	 * Implement wildcard pattern matching with support for '?' and '*'.
+	 * 
+	 * '?' Matches any single character. '*' Matches any sequence of characters
+	 * (including the empty sequence).
+	 * 
+	 * The matching should cover the entire input string (not partial).
+	 */
+	public boolean isMatch(String s, String p) {
+		if (p.length() == 0) {
+			return s.length() == 0 || false;
+		}
+		char p1 = p.charAt(0);
+		if (s.length() == 0) {
+			return p1 == '*' && isMatch(s, p.substring(1)) || false;
+		}
+		char s1 = s.charAt(0);
+
+		if (p1 == '*') {
+			for (int i = 0; i <= s.length(); i++) {
+				if (isMatch(s.substring(i, s.length()), p.substring(1))) {
+					return true;
+				}
+			}
+			return false;
+		} else if (p1 == '?') {
+			return isMatch(s.substring(1), p.substring(1));
+		} else {
+			return p1 == s1 && isMatch(s.substring(1), p.substring(1));
+		}
+	}
 }
