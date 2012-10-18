@@ -971,31 +971,72 @@ public class Solution {
 		}
 		return sb.toString();
 	}
-	
-    public int sqrt(int x) {
-        
-        if(x==0) return 0;
-        if(x==1) return 1;
-        
-        int i=0;
-        int j=x;
-        // invariant:
-        // i< sqrt(x) <j
-        while(i+1<j){
-            int m=(i+j)/2;
-            if(Integer.MAX_VALUE/m<m){
-                j=m;
-            }else{
-                int m2=m*m;
-                if(m2==x) return m;
-                if(m2>x){
-                    j=m;
-                }else{
-                    i=m;
-                }
-            }
-        }
-        return i;
-        
-    }
+
+	public int sqrt(int x) {
+
+		if (x == 0)
+			return 0;
+		if (x == 1)
+			return 1;
+
+		int i = 0;
+		int j = x;
+		// invariant:
+		// i< sqrt(x) <j
+		while (i + 1 < j) {
+			int m = (i + j) / 2;
+			if (Integer.MAX_VALUE / m < m) {
+				j = m;
+			} else {
+				int m2 = m * m;
+				if (m2 == x)
+					return m;
+				if (m2 > x) {
+					j = m;
+				} else {
+					i = m;
+				}
+			}
+		}
+		return i;
+
+	}
+
+	/*
+	 * Given a collection of integers that might contain duplicates, S, return
+	 * all possible subsets.
+	 * 
+	 * Note: Elements in a subset must be in non-descending order. The solution
+	 * set must not contain duplicate subsets.
+	 */
+	public ArrayList<ArrayList<Integer>> subsetsWithDup(int[] num) {
+		Arrays.sort(num);
+		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer> path = new ArrayList<Integer>();
+		subsetsWithDup(num, 0, path, result);
+		return result;
+	}
+
+	void subsetsWithDup(int[] num, int offset, ArrayList<Integer> path,
+			ArrayList<ArrayList<Integer>> result) {
+		int n = num.length;
+		if (offset >= n) {
+			result.add(new ArrayList<Integer>(path));
+			return;
+		}
+
+		int dupCount = 1;
+		while (offset + dupCount < n && num[offset + dupCount] == num[offset])
+			dupCount++;
+		for (int i = 0; i <= dupCount; i++) {
+			for (int j = 0; j < i; j++) {
+				path.add(num[offset]);
+			}
+			subsetsWithDup(num, offset + dupCount, path, result);
+			for (int j = 0; j < i; j++) {
+				path.remove(path.size() - 1);
+			}
+		}
+
+	}
 }
