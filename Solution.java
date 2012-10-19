@@ -1460,4 +1460,25 @@ public class Solution {
 
 	}
 
+	/*
+	 * Given an array where elements are sorted in ascending order, convert it
+	 * to a height balanced BST.
+	 */
+	public TreeNode sortedArrayToBST(int[] num) {
+		return sortedArrayToBST(num, 0, num.length - 1);
+	}
+
+	TreeNode sortedArrayToBST(int[] num, int left, int right) {
+		if (left > right)
+			return null;
+
+		int mid = (left + right) / 2;
+
+		TreeNode root = new TreeNode(num[mid]);
+		root.left = sortedArrayToBST(num, left, mid - 1);
+		root.right = sortedArrayToBST(num, mid + 1, right);
+		return root;
+
+	}
+
 }
