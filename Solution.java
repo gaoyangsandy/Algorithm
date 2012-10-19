@@ -1274,4 +1274,40 @@ public class Solution {
 		return result;
 
 	}
+
+	/*
+	 * Given a binary tree, return the zigzag level order traversal of its
+	 * nodes' values. (ie, from left to right, then right to left for the next
+	 * level and alternate between).
+	 */
+	public ArrayList<ArrayList<Integer>> zigzagLevelOrder(TreeNode root) {
+		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+		ArrayList<TreeNode> currentLevel = new ArrayList<TreeNode>();
+		if (root != null)
+			currentLevel.add(root);
+		boolean leftFirst = true;
+		while (currentLevel.size() > 0) {
+			ArrayList<TreeNode> nextLevel = new ArrayList<TreeNode>();
+			ArrayList<Integer> currentResult = new ArrayList<Integer>();
+			for (int i = currentLevel.size() - 1; i >= 0; i--) {
+				TreeNode node = currentLevel.get(i);
+				currentResult.add(node.val);
+				if (leftFirst) {
+					if (node.left != null)
+						nextLevel.add(node.left);
+					if (node.right != null)
+						nextLevel.add(node.right);
+				} else {
+					if (node.right != null)
+						nextLevel.add(node.right);
+					if (node.left != null)
+						nextLevel.add(node.left);
+				}
+			}
+			result.add(currentResult);
+			currentLevel = nextLevel;
+			leftFirst = !leftFirst;
+		}
+		return result;
+	}
 }
