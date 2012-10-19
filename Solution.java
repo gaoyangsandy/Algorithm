@@ -1310,4 +1310,45 @@ public class Solution {
 		}
 		return result;
 	}
+
+	/*
+	 * Given a set of candidate numbers (C) and a target number (T), find all
+	 * unique combinations in C where the candidate numbers sums to T.
+	 * 
+	 * The same repeated number may be chosen from C unlimited number of times.
+	 */
+	public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates,
+			int target) {
+		Arrays.sort(candidates);
+		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer> choice = new ArrayList<Integer>();
+		combinationSum(candidates, target, 0, choice, result);
+		return result;
+
+	}
+
+	// choice represents the choice has already been made
+	// only candiates[offset..n-1] are available to choose
+	void combinationSum(int[] candidates, int target, int offset,
+			ArrayList<Integer> choice, ArrayList<ArrayList<Integer>> result) {
+		if (target < 0) {
+			return;
+		}
+		if (target == 0) {
+			ArrayList<Integer> ints = new ArrayList<Integer>();
+			for (int i : choice) {
+				ints.add(i);
+			}
+			result.add(ints);
+			return;
+		}
+
+		// make a choice
+		for (int i = offset; i < candidates.length; i++) {
+			choice.add(candidates[i]);
+			combinationSum(candidates, target - candidates[i], i, choice,
+					result);
+			choice.remove(choice.size() - 1);
+		}
+	}
 }
