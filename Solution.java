@@ -1560,4 +1560,23 @@ public class Solution {
 		return (1 << i) + divideLong(dividend - (divisor << i), divisor);
 	}
 
+	/*
+	 * Given an unsorted integer array, find the first missing positive integer.
+	 */
+	public int firstMissingPositive(int[] A) {
+		int n = A.length;
+		for (int i = 0; i < n; i++) {
+			while (A[i] != i + 1 && A[i] >= 1 && A[i] <= n
+					&& A[A[i] - 1] != A[i]) {
+				swap(A, i, A[i] - 1);
+			}
+		}
+
+		for (int i = 0; i < n; i++) {
+			if (A[i] != i + 1)
+				return i + 1;
+		}
+		return n + 1;
+	}
+
 }
