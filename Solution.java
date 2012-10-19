@@ -1429,4 +1429,35 @@ public class Solution {
 
 	}
 
+	/*
+	 * Given inorder and postorder traversal of a tree, construct the binary
+	 * tree.
+	 */
+	public TreeNode buildTree(int[] inorder, int[] postorder) {
+		return buildTree(inorder, 0, inorder.length - 1, postorder, 0,
+				postorder.length - 1);
+	}
+
+	TreeNode buildTree(int[] inorder, int il, int ir, int[] postorder, int pl,
+			int pr) {
+		if (il > ir)
+			return null;
+		int rootVal = postorder[pr];
+		TreeNode root = new TreeNode(rootVal);
+		int i = il;
+		while (inorder[i] != rootVal)
+			i++;
+		// inorder[il..i-1] is the left subtree
+		// inorder[i] is the root
+		// inorder[i+1..ir] is the right subtree
+		int leftCount = i - il;
+		int rightCount = ir - i;
+		root.left = buildTree(inorder, il, i - 1, postorder, pl, pl + leftCount
+				- 1);
+		root.right = buildTree(inorder, i + 1, ir, postorder, pl + leftCount,
+				pl + leftCount + rightCount - 1);
+		return root;
+
+	}
+
 }
