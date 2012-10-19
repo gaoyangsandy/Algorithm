@@ -1535,4 +1535,29 @@ public class Solution {
 		return null;
 	}
 
+	/*
+	 * Divide two integers without using multiplication, division and mod
+	 * operator.
+	 */
+	public int divide(int dividend, int divisor) {
+		return (int) divideLong(dividend, divisor);
+	}
+
+	long divideLong(long dividend, long divisor) {
+		if (dividend < 0)
+			return -divideLong(-dividend, divisor);
+		if (divisor < 0)
+			return -divideLong(dividend, -divisor);
+
+		if (dividend < divisor)
+			return 0;
+
+		// find largest i such that dividend - (divisor<<i) > 0
+		// then dividend/divisor = 2^i + (dividend - divisor*2^1)/divisor
+		int i = 0;
+		while (dividend > (divisor << (i + 1)))
+			i++;
+		return (1 << i) + divideLong(dividend - (divisor << i), divisor);
+	}
+
 }
