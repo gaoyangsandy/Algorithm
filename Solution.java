@@ -1403,4 +1403,30 @@ public class Solution {
 		return s;
 	}
 
+	/*
+	 * Given two integers n and k, return all possible combinations of k numbers
+	 * out of 1 ... n.
+	 */
+	public ArrayList<ArrayList<Integer>> combine(int n, int k) {
+		ArrayList<Integer> choice = new ArrayList<Integer>();
+		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+		combine(1, n, k, choice, result);
+		return result;
+	}
+
+	void combine(int lower, int upper, int k, ArrayList<Integer> choice,
+			ArrayList<ArrayList<Integer>> result) {
+		if (choice.size() == k) {
+			result.add(new ArrayList<Integer>(choice));
+			return;
+		}
+
+		for (int i = lower; i <= upper; i++) {
+			choice.add(i);
+			combine(i + 1, upper, k, choice, result);
+			choice.remove(choice.size() - 1);
+		}
+
+	}
+
 }
