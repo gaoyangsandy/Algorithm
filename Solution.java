@@ -1351,4 +1351,38 @@ public class Solution {
 			choice.remove(choice.size() - 1);
 		}
 	}
+
+	/*
+	 * Given a collection of candidate numbers (C) and a target number (T), find
+	 * all unique combinations in C where the candidate numbers sums to T.
+	 * 
+	 * Each number in C may only be used once in the combination.
+	 */
+	public ArrayList<ArrayList<Integer>> combinationSum2(int[] num, int target) {
+		Arrays.sort(num);
+		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer> choice = new ArrayList<Integer>();
+		combinationSum2(num, target, 0, choice, result);
+		return result;
+
+	}
+
+	void combinationSum2(int[] num, int target, int offset,
+			ArrayList<Integer> choice, ArrayList<ArrayList<Integer>> result) {
+		if (target < 0)
+			return;
+		if (target == 0) {
+			result.add(new ArrayList<Integer>(choice));
+			return;
+		}
+
+		for (int i = offset; i < num.length; i++) {
+			if (i == offset || num[i] != num[i - 1]) {
+				choice.add(num[i]);
+				combinationSum2(num, target - num[i], i + 1, choice, result);
+				choice.remove(choice.size() - 1);
+			}
+		}
+	}
+
 }
