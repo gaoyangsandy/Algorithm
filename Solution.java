@@ -1246,4 +1246,32 @@ public class Solution {
 
 		return pm[p.length()];
 	}
+
+	/*
+	 * Given a binary tree, return the level order traversal of its nodes'
+	 * values. (ie, from left to right, level by level).
+	 */
+	public ArrayList<ArrayList<Integer>> levelOrder(TreeNode root) {
+		ArrayList<TreeNode> currentLevel = new ArrayList<TreeNode>();
+		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+
+		if (root != null)
+			currentLevel.add(root);
+		while (currentLevel.size() > 0) {
+			ArrayList<TreeNode> nextLevel = new ArrayList<TreeNode>();
+			ArrayList<Integer> currentResult = new ArrayList<Integer>();
+			for (TreeNode node : currentLevel) {
+				currentResult.add(node.val);
+				if (node.left != null)
+					nextLevel.add(node.left);
+				if (node.right != null)
+					nextLevel.add(node.right);
+			}
+			result.add(currentResult);
+			currentLevel = nextLevel;
+		}
+
+		return result;
+
+	}
 }
