@@ -1481,4 +1481,42 @@ public class Solution {
 
 	}
 
+	/*
+	 * Given a singly linked list where elements are sorted in ascending order,
+	 * convert it to a height balanced BST.
+	 */
+	public TreeNode sortedListToBST(ListNode head) {
+		int count = 0;
+		ListNode p = head;
+		while (p != null) {
+			p = p.next;
+			count++;
+		}
+
+		return sortedListToBST(head, count).tree;
+	}
+
+	TreeList sortedListToBST(ListNode head, int count) {
+		TreeList result = new TreeList();
+		if (count == 0) {
+			result.list = head;
+			return result;
+		}
+		int leftCount = count / 2;
+		int rightCount = count - 1 - leftCount;
+		TreeList leftTreeList = sortedListToBST(head, leftCount);
+		TreeList rightTreeList = sortedListToBST(leftTreeList.list.next,
+				rightCount);
+		result.tree = new TreeNode(leftTreeList.list.val);
+		result.tree.left = leftTreeList.tree;
+		result.tree.right = rightTreeList.tree;
+		result.list = rightTreeList.list;
+		return result;
+	}
+
+	private static class TreeList {
+		public TreeNode tree;
+		public ListNode list;
+	}
+
 }
