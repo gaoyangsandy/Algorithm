@@ -1579,4 +1579,28 @@ public class Solution {
 		return n + 1;
 	}
 
+	/*
+	 * Given a binary tree, flatten it to a linked list in-place.
+	 */
+	public void flatten(TreeNode root) {
+		if (root == null)
+			return;
+
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		stack.push(root);
+		TreeNode tail = null;
+		while (!stack.empty()) {
+			TreeNode next = stack.pop();
+			if (next.right != null)
+				stack.push(next.right);
+			if (next.left != null)
+				stack.push(next.left);
+			next.left = null;
+			if (tail != null) {
+				tail.right = next;
+			}
+			tail = next;
+		}
+	}
+
 }
