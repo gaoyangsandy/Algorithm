@@ -1625,6 +1625,49 @@ public class Solution {
 			}
 			longest++;
 		}
+		
+		/*
+		 * There are two sorted arrays A and B of size m and n respectively. Find the median of the two sorted arrays. 
+		 * The overall run time complexity should be O(log (m+n)).
+		 */
+	    public double findMedianSortedArrays(int[] a, int[] b) {
+	        int total = a.length+b.length;
+	        if(total%2==1){
+	            return findSmallest(a,0,a.length-1,b,0,b.length-1,(total+1)/2);
+	        }else{
+	            return (findSmallest(a,0,a.length-1,b,0,b.length-1,total/2)+
+	                findSmallest(a,0,a.length-1,b,0,b.length-1,total/2+1))/2.0;
+	        }
+	        
+	    }
+	    
+	    // find the k-th smallest number in {a[al..ar], b[bl..br]}
+	    int findSmallest(int[] a, int al, int ar, int[] b, int bl, int br, int k){
+	        int sizeA = ar-al+1;
+	        int sizeB = br-bl+1;
+	        
+	        // invariant i+j = k-1
+	        int i= (int)((k-1)*((double)sizeA/(sizeA+sizeB)));
+	        int j= k-1-i;
+	        
+	        // maintenain a[al-1] = -INF and a[ar+1] = INF.
+	        int ai_1 = i==0?Integer.MIN_VALUE:a[al+i-1];
+	        int bj_1 = j==0?Integer.MIN_VALUE:b[bl+j-1];
+	        int ai = i==sizeA?Integer.MAX_VALUE:a[al+i];
+	        int bj = j==sizeB?Integer.MAX_VALUE:b[bl+j];
+	        
+	        if(ai>=bj_1 && ai<=bj){
+	            return ai;
+	        }
+	        
+	        if(bj>=ai_1 && bj<=ai){
+	            return bj;
+	        }
+	        
+	        if(ai>bj){
+	            return findSmallest(a,al,al+i-1,b,bl+j+1,br, k-j-1);    
+	        }
+	        return findSmallest(a,al+i+1,ar,b,bl,bl+j-1,k-i-1);
+	    }
 	}
-
 }
