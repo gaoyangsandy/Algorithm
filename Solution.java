@@ -1670,4 +1670,37 @@ public class Solution {
 	        return findSmallest(a,al+i+1,ar,b,bl,bl+j-1,k-i-1);
 	    }
 	}
+
+	/*
+	 * Given a string S and a string T, find the minimum window in S which will
+	 * contain all the characters in T in complexity O(n).
+	 */
+	public String minWindow(String S, String T) {
+		int[] needToFind = new int[256];
+		int count = T.length();
+		for (int i = 0; i < T.length(); i++) {
+			needToFind[T.charAt(i)]++;
+		}
+
+		String minWin = S;
+		for (int i = 0, j = 0; j < S.length(); j++) {
+			char Sj = S.charAt(j);
+			if (needToFind[Sj] > 0) {
+				count--;
+			}
+			needToFind[Sj]--;
+
+			if (count == 0) {
+				while (needToFind[S.charAt(i)] < 0) {
+					needToFind[S.charAt(i)]++;
+					i++;
+				}
+
+				if (j - i + 1 < minWin.length()) {
+					minWin = S.substring(i, j + 1);
+				}
+			}
+		}
+		return count == 0 ? minWin : "";
+	}
 }
